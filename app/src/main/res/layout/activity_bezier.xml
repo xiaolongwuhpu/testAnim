@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_gray_bg"
+    android:orientation="vertical"
+    tools:context=".activity.BezierActivity">
+
+    <com.testanim.longwu.view.QuadBezierView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_157" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_gray_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/common_gray_bg"
+            android:orientation="vertical"
+            tools:context=".activity.BezierActivity">
+
+
+            <com.testanim.longwu.view.PathBezier
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_180" />
+
+            <com.testanim.longwu.view.BezierWaveView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_400" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
