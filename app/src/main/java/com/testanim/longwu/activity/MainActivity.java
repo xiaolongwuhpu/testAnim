@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.testanim.longwu.R;
 import com.testanim.longwu.view.BallView;
-import com.testanim.longwu.view.MetaBallView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.tv)
     TextView tv;
-    @BindView(R.id.btn1)
+    @BindView(R.id.numericalgradient)
     Button btn1;
-    @BindView(R.id.myview)
+    @BindView(R.id.ballview)
     BallView myview;
     @BindView(R.id.testrotate3d)
     Button btn2;
@@ -44,17 +43,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_1);
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tv, R.id.myview, R.id.testrotate3d, R.id.button3d, R.id.buttonrotate, R.id.bezier, R.id.metaball_bezier})
+    @OnClick({R.id.tv, R.id.ballview, R.id.testrotate3d, R.id.numericalgradient,R.id.button3d, R.id.buttonrotate, R.id.bezier, R.id.metaball_bezier})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv:
                 objectAnim();
                 break;
-            case R.id.myview:
+            case R.id.ballview:
                 myview.reStartPoint();
                 break;
             case R.id.testrotate3d:
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 objectAnimator.setDuration(1000);
                 objectAnimator.start();
                 break;
-            case R.id.btn1:
+            case R.id.numericalgradient:
                 ValueAnimator animator = ValueAnimator.ofFloat((float) btn1.getLayoutParams().width, 500f);
                 animator.setDuration(3000);
                 animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
