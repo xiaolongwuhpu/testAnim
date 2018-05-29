@@ -3,8 +3,10 @@ package com.testanim.longwu.view;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.testanim.longwu.BezierEvaluator;
 import com.testanim.longwu.bean.PointXY;
 
 public class PathBezier extends View implements View.OnClickListener {
+    private Paint mTextPaint;
     private Paint mPathPaint;
     private Paint mCirclePaint;
 
@@ -29,6 +32,7 @@ public class PathBezier extends View implements View.OnClickListener {
     private int mControlPointY;
 
     private Path mPath;
+    private Rect rectText;
 
     public PathBezier(Context context) {
         this(context,null);
@@ -48,6 +52,9 @@ public class PathBezier extends View implements View.OnClickListener {
         mPathPaint.setStyle(Paint.Style.STROKE);
         mPathPaint.setStrokeWidth(5);
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTextPaint.setTextSize(25);
+
 
         mStartPointX = 30;
         mStartPointY = 30;
@@ -59,7 +66,13 @@ public class PathBezier extends View implements View.OnClickListener {
         mControlPointY = 300;
         mPath = new Path();
         setOnClickListener(this);
+
+        rectText = new Rect();
+        mTextPaint.getTextBounds(titleText,0, titleText.length(), rectText);
+
+
     }
+    private  String titleText = "点击一下试试吧!";
     protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension( getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
                 getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
@@ -88,15 +101,15 @@ public class PathBezier extends View implements View.OnClickListener {
         super.onDraw(canvas);
         mPath.reset();
         mPath.moveTo(mStartPointX,mStartPointY);
-
-        canvas.drawCircle(mStartPointX,mStartPointY,20,mPathPaint);
-        canvas.drawCircle(mEndPointX,mEndPointY,20,mPathPaint);
+        canvas.drawText(titleText,getWidth()/2-rectText.width()/2,rectText.height(),mTextPaint);
+        canvas.drawCircle(mStartPointX,mStartPointY,20,mCirclePaint);
+        canvas.drawCircle(mEndPointX,mEndPointY,20,mCirclePaint);
 
         mPath.quadTo(mControlPointX,mControlPointY,mEndPointX,mEndPointY);
         canvas.drawPath(mPath,mPathPaint);
-        canvas.drawCircle(mMovePointX,mMovePointY,20,mPathPaint);
-
-
+        mCirclePaint.setColor(Color.RED);
+        canvas.drawCircle(mMovePointX,mMovePointY,10,mCirclePaint);
+        mCirclePaint.reset();
     }
 
     @Override
@@ -118,9 +131,6 @@ public class PathBezier extends View implements View.OnClickListener {
         animator.start();
 
     }
-
-
-
 
 }
 

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.testanim.longwu.R;
 import com.testanim.longwu.view.BallView;
+import com.testanim.longwu.view.MetaBallView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     Button button3d;
     @BindView(R.id.buttonrotate)
     Button buttonrotate;
+    @BindView(R.id.bezier)
+    Button bezier;
+    @BindView(R.id.metaball_bezier)
+    Button metaballBezier;
 
     private boolean isBack = false;
 
@@ -43,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tv, R.id.myview, R.id.testrotate3d, R.id.button3d, R.id.buttonrotate, R.id.bezier})
+    @OnClick({R.id.tv, R.id.myview, R.id.testrotate3d, R.id.button3d, R.id.buttonrotate, R.id.bezier, R.id.metaball_bezier})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv:
@@ -63,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.bezier:
                 Intent bezier = new Intent(this, BezierActivity.class);
                 startActivity(bezier);
+                break;
+            case R.id.metaball_bezier:
+                Intent metaballBezier = new Intent(this, MetaBallActivity.class);
+                startActivity(metaballBezier);
                 break;
             case R.id.buttonrotate:
                 ObjectAnimator objectAnimator;
