@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 
-import com.testanim.longwu.PointEvaluator;
+import com.testanim.longwu.evaluator.PointEvaluator;
 import com.testanim.longwu.bean.PointXY;
 
 /**
@@ -68,7 +68,7 @@ public class BallView extends View implements View.OnClickListener {
         PointXY endPointXY = new PointXY(screenWidth - radius, screenHeight - radius);
         animator = ValueAnimator.ofObject(new PointEvaluator(), startPointXY, endPointXY);
         animator.setDuration(3000);
-//          animator.setInterpolator(new OvershootInterpolator());
+//      animator.setInterpolator(new OvershootInterpolator());
         animator.setInterpolator(new BounceInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override

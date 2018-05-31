@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import com.testanim.longwu.BezierEvaluator;
+import com.testanim.longwu.evaluator.BezierEvaluator;
 import com.testanim.longwu.bean.PointXY;
 
 public class PathBezier extends View implements View.OnClickListener {

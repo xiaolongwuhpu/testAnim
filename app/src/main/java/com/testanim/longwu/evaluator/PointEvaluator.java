@@ -1,4 +1,4 @@
-package com.testanim.longwu;
+package com.testanim.longwu.evaluator;
 
 import android.animation.TypeEvaluator;
 

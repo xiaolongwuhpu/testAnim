@@ -37,17 +37,19 @@ public class MainActivity extends AppCompatActivity {
     Button bezier;
     @BindView(R.id.metaball_bezier)
     Button metaballBezier;
+    @BindView(R.id.move_ball)
+    Button moveBall;
 
     private boolean isBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_1);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tv, R.id.ballview, R.id.testrotate3d, R.id.numericalgradient,R.id.button3d, R.id.buttonrotate, R.id.bezier, R.id.metaball_bezier})
+    @OnClick({R.id.tv, R.id.ballview, R.id.testrotate3d, R.id.numericalgradient, R.id.button3d, R.id.buttonrotate, R.id.bezier, R.id.metaball_bezier,R.id.move_ball})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv:
@@ -55,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.ballview:
                 myview.reStartPoint();
+                break;
+            case R.id.move_ball:
+                Intent intent2 = new Intent(this, MoveBallActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.testrotate3d:
                 Intent intent = new Intent(this, Rotate3DActivity.class);
