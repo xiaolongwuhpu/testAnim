@@ -1,154 +1,127 @@
 package com.testanim.longwu.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.testanim.longwu.R;
-import com.testanim.longwu.view.BallView;
+import com.testanim.longwu.base.BaseFragment;
+import com.testanim.longwu.bean.TabEntity;
+import com.testanim.longwu.fragment.FirstTabFragment;
+import com.testanim.longwu.fragment.FourthTabFragment;
+import com.testanim.longwu.fragment.SecondTabFragment;
+import com.testanim.longwu.fragment.ThirdTabFragment;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FirstTabFragment.OnFragmentInteractionListener {
 
-    @BindView(R.id.tv)
-    TextView tv;
-    @BindView(R.id.numericalgradient)
-    Button btn1;
-    @BindView(R.id.ballview)
-    BallView myview;
-    @BindView(R.id.testrotate3d)
-    Button btn2;
-    @BindView(R.id.button3d)
-    Button button3d;
-    @BindView(R.id.buttonrotate)
-    Button buttonrotate;
-    @BindView(R.id.bezier)
-    Button bezier;
-    @BindView(R.id.metaball_bezier)
-    Button metaballBezier;
-    @BindView(R.id.move_ball)
-    Button moveBall;
+    @BindView(R.id.vp_2)
+    ViewPager mViewPager;
+    @BindView(R.id.tl_2)
+    CommonTabLayout commonTabLayout;
+    private ArrayList<BaseFragment> mFragments = new ArrayList<>();
 
-    private boolean isBack = false;
+    private String[] mTitles = {"首页", "认证", "发现", "我的"};
+    private int[] mIconUnselectIds = {
+            R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect,
+            R.mipmap.tab_contact_unselect, R.mipmap.tab_more_unselect};
+    private int[] mIconSelectIds = {
+            R.mipmap.tab_home_select, R.mipmap.tab_speech_select,
+            R.mipmap.tab_contact_select, R.mipmap.tab_more_select};
+
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+    private FirstTabFragment firstTabFragment;
+    private SecondTabFragment secondTabFragment;
+    private ThirdTabFragment thirdTabFragment;
+    private FourthTabFragment fourthTabFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-    }
+        firstTabFragment = FirstTabFragment.newInstance(mTitles[0], "");
+        secondTabFragment = SecondTabFragment.newInstance(mTitles[1], "");
+        thirdTabFragment = ThirdTabFragment.newInstance(mTitles[2], "");
+        fourthTabFragment = FourthTabFragment.newInstance(mTitles[3], "");
 
-    @OnClick({R.id.tv, R.id.ballview, R.id.testrotate3d, R.id.numericalgradient, R.id.button3d, R.id.buttonrotate, R.id.bezier, R.id.metaball_bezier,R.id.move_ball})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv:
-                objectAnim();
-                break;
-            case R.id.ballview:
-                myview.reStartPoint();
-                break;
-            case R.id.move_ball:
-                Intent intent2 = new Intent(this, MoveBallActivity.class);
-                startActivity(intent2);
-                break;
-            case R.id.testrotate3d:
-                Intent intent = new Intent(this, Rotate3DActivity.class);
-                startActivity(intent);
-                break;
-//            case R.id.button3d:
-//                Intent intent2 = new Intent(this, Rotate3DforCustomActivity.class);
-//                startActivity(intent2);
-//                break;
-            case R.id.bezier:
-                Intent bezier = new Intent(this, BezierActivity.class);
-                startActivity(bezier);
-                break;
-            case R.id.metaball_bezier:
-                Intent metaballBezier = new Intent(this, MetaBallActivity.class);
-                startActivity(metaballBezier);
-                break;
-            case R.id.buttonrotate:
-                ObjectAnimator objectAnimator;
-                if (!isBack) {  //正 转 反
-                    objectAnimator = ObjectAnimator.ofFloat(buttonrotate, "rotationY", 0f, 180f);
-                    isBack = true;
-                    buttonrotate.setText("转正面了");
-                } else {  //反 转 正
-                    objectAnimator = ObjectAnimator.ofFloat(buttonrotate, "rotationY", 180f, 360f);
-                    isBack = false;
-                    buttonrotate.setText("反面哈哈哈哈");
-                }
-                objectAnimator.setDuration(1000);
-                objectAnimator.start();
-                break;
-            case R.id.numericalgradient:
-                ValueAnimator animator = ValueAnimator.ofFloat((float) btn1.getLayoutParams().width, 500f);
-                animator.setDuration(3000);
-                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        float currentvalue = (float) animation.getAnimatedValue();
-                        btn1.setText(currentvalue + "");
-                        btn1.getLayoutParams().width = (int) currentvalue;
-                        btn1.requestLayout();
-                        if (currentvalue == 500) {
-                            currentvalue = 300;
-                            btn1.getLayoutParams().width = (int) currentvalue;
-                            btn1.requestLayout();
-                            return;
-                        }
-                    }
-                });
-                animator.start();
-                break;
 
+        mFragments.add(firstTabFragment);
+        mFragments.add(secondTabFragment);
+        mFragments.add(thirdTabFragment);
+        mFragments.add(fourthTabFragment);
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
-    }
-
-    private void objectAnim() {
-        ObjectAnimator animator1 = ObjectAnimator.ofFloat(tv, "scaleX", 1f, 3f, 2f, 1f);
-        ObjectAnimator animator5 = ObjectAnimator.ofFloat(tv, "scaleY", 1f, 3f, 2f, 1f);
-        ObjectAnimator animator2 = ObjectAnimator.ofFloat(tv, "translationX", 0f, 360f, 0, -360F, 0);
-        ObjectAnimator animator3 = ObjectAnimator.ofFloat(tv, "rotation", 0f, 360f);
-        ObjectAnimator animator4 = ObjectAnimator.ofFloat(tv, "alpha", 1f, 0f, 0.5f);
-        ObjectAnimator animator6 = ObjectAnimator.ofFloat(tv, "alpha", 1f, 0f);
-
-        AnimatorSet set = new AnimatorSet();
-        set.addListener(new Animator.AnimatorListener() {
+        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        commonTabLayout.setTabData(mTabEntities);
+        commonTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-                Log.e("---", animation.getDuration() + "取值");
+            public void onTabSelect(int position) {
+                mViewPager.setCurrentItem(position);
             }
 
             @Override
-            public void onAnimationEnd(Animator animation) {
-                Log.e("---==", animation.getDuration() + "取值");
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
+            public void onTabReselect(int position) {
 
             }
         });
-        set.play(animator1).with(animator5).with(animator2).with(animator3).with(animator4);
-        set.setDuration(2000);
-        set.start();
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                commonTabLayout.setCurrentTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mViewPager.setCurrentItem(0);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position];
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
     }
 
 }

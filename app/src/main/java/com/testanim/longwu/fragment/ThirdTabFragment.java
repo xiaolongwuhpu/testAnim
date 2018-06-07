@@ -85,7 +85,7 @@ public class ThirdTabFragment extends BaseFragment {
 
     @Override
     public int bindLayout() {
-        return R.layout.fragment_tab_first;
+        return R.layout.fragment_tab_third;
     }
 
     @Override

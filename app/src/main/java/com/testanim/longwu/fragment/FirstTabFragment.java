@@ -116,7 +116,7 @@ public class FirstTabFragment extends BaseFragment {
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_main;
+        return R.layout.fragment_tab_first;
     }
 
     @Override

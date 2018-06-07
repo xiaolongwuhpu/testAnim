@@ -85,7 +85,7 @@ public class FourthTabFragment extends BaseFragment {
 
     @Override
     public int bindLayout() {
-        return R.layout.fragment_tab_first;
+        return R.layout.fragment_tab_fourth;
     }
 
     @Override
