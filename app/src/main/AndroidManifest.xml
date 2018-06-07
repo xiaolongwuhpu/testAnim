@@ -11,16 +11,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".activity.Rotate3DActivity" />
         <activity android:name=".activity.BezierActivity" />
         <activity android:name=".activity.MetaBallActivity" />
-        <activity android:name=".activity.MoveBallActivity"></activity>
+        <activity android:name=".activity.MoveBallActivity" />
+        <activity android:name=".activity.Main2Activity">  <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
     </application>
 
 </manifest>

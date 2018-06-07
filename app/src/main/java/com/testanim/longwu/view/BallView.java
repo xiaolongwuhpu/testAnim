@@ -7,21 +7,29 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
+import android.widget.Toast;
 
-import com.testanim.longwu.evaluator.PointEvaluator;
 import com.testanim.longwu.bean.PointXY;
+import com.testanim.longwu.evaluator.PointEvaluator;
 
 /**
  * Created by wujing on 2018/1/23.
  */
 
-public class BallView extends View implements View.OnClickListener {
+public class BallView extends View {
     private float radius = 70f;
     private PointXY currenPointXY;
     private Paint mPaint;
+    private float screenWidth;
+    private float screenHeight;
 
+    ValueAnimator animator;
+    private Context mContext;
+    private float touchx;
+    private float touchy;
 
     public BallView(Context context) {
         this(context, null);
@@ -33,6 +41,7 @@ public class BallView extends View implements View.OnClickListener {
 
     public BallView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mContext = context;
         init();
     }
 
@@ -42,7 +51,11 @@ public class BallView extends View implements View.OnClickListener {
     }
 
     public void reStartPoint() {
-        if ((int) currenPointXY.getX() == getWidth() - radius || (int) currenPointXY.getY() == getHeight() - radius) {
+        whichCircle(touchx, touchy);
+    }
+
+    private void initBallLocation() {
+        if ((int) currenPointXY.getX() == screenWidth - radius || (int) currenPointXY.getY() == screenHeight - radius) {
             this.currenPointXY = new PointXY(radius, radius);
             invalidate();
             animator.start();
@@ -55,14 +68,17 @@ public class BallView extends View implements View.OnClickListener {
         currenPointXY = new PointXY(radius, radius);
     }
 
-    private int screenWidth;
-    private int screenHeight;
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        screenHeight = getHeight();
-        screenWidth = getWidth();
+        screenHeight =getMeasuredHeight();
+        screenWidth = getMeasuredWidth();
 
         PointXY startPointXY = new PointXY(radius, radius);
         PointXY endPointXY = new PointXY(screenWidth - radius, screenHeight - radius);
@@ -80,7 +96,6 @@ public class BallView extends View implements View.OnClickListener {
         animator.start();
     }
 
-    ValueAnimator animator;
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -88,11 +103,26 @@ public class BallView extends View implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        if ((int) currenPointXY.getX() == getWidth() - radius || (int) currenPointXY.getY() == getHeight() - radius) {
-            this.currenPointXY = new PointXY(radius, radius);
-            invalidate();
-            animator.start();
+    public boolean onTouchEvent(MotionEvent event) {
+        // 获取点击屏幕时的点的坐标
+        touchx = event.getX();
+        touchy = event.getY();
+        whichCircle(touchx, touchy);
+        return super.onTouchEvent(event);
+    }
+
+    /**
+     * 确定点击的点在哪个圆内
+     */
+    private void whichCircle(float x, float y) {
+        float mx = x - currenPointXY.x;
+        float my = y - currenPointXY.y;
+        float result = mx * mx + my * my;
+
+        if (result <= radius * radius) {
+            Toast.makeText(mContext, "点击了圆的区域", Toast.LENGTH_SHORT).show();
+            initBallLocation();
         }
+
     }
 }

@@ -79,12 +79,6 @@ public class MoveBallView extends View {
         endPoint.y = h - ballRadius;
 
         currentPoint = startPoint;
-
-        //下
-//右
-//                }else if (currentPoint.y >= 0 && currentPoint.x >= mWidth-ballRadius) { //右
-        /*currentPoint.x >= mWidth-ballRadius &&*///上
-//左
         animatorListenerAdapter = new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animation) {
