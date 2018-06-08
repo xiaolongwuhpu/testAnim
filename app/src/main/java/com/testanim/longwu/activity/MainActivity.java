@@ -13,11 +13,17 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.testanim.longwu.R;
 import com.testanim.longwu.base.BaseFragment;
+import com.testanim.longwu.bean.MessageEvent;
 import com.testanim.longwu.bean.TabEntity;
 import com.testanim.longwu.fragment.FirstTabFragment;
 import com.testanim.longwu.fragment.FourthTabFragment;
 import com.testanim.longwu.fragment.SecondTabFragment;
 import com.testanim.longwu.fragment.ThirdTabFragment;
+import com.testanim.longwu.util.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -51,11 +57,16 @@ public class MainActivity extends AppCompatActivity implements FirstTabFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
+        initdata();
+        initView();
+    }
+
+    private void initdata() {
         firstTabFragment = FirstTabFragment.newInstance(mTitles[0], "");
         secondTabFragment = SecondTabFragment.newInstance(mTitles[1], "");
         thirdTabFragment = ThirdTabFragment.newInstance(mTitles[2], "");
         fourthTabFragment = FourthTabFragment.newInstance(mTitles[3], "");
-
 
         mFragments.add(firstTabFragment);
         mFragments.add(secondTabFragment);
@@ -64,12 +75,16 @@ public class MainActivity extends AppCompatActivity implements FirstTabFragment.
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
+    }
+
+    private void initView() {
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         commonTabLayout.setTabData(mTabEntities);
         commonTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
                 mViewPager.setCurrentItem(position);
+                EventBus.getDefault().post(new MessageEvent("第"+(position+1)+"个"));
             }
 
             @Override
@@ -77,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements FirstTabFragment.
 
             }
         });
-
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -87,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements FirstTabFragment.
             @Override
             public void onPageSelected(int position) {
                 commonTabLayout.setCurrentTab(position);
+                EventBus.getDefault().post(new MessageEvent("第"+(position+1)+"个"));
             }
 
             @Override
@@ -124,4 +139,17 @@ public class MainActivity extends AppCompatActivity implements FirstTabFragment.
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void SetMsg(MessageEvent messageEvent) {
+        ToastUtils.showLong(messageEvent.getMessage());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }

@@ -10,10 +10,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
-import android.widget.Toast;
 
 import com.testanim.longwu.bean.PointXY;
 import com.testanim.longwu.evaluator.PointEvaluator;
+import com.testanim.longwu.util.ToastUtils;
 
 /**
  * Created by wujing on 2018/1/23.
@@ -120,7 +120,7 @@ public class BallView extends View {
         float result = mx * mx + my * my;
 
         if (result <= radius * radius) {
-            Toast.makeText(mContext, "点击了圆的区域", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShort("点击了圆的区域");
             initBallLocation();
         }
 

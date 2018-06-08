@@ -21,15 +21,20 @@ import com.testanim.longwu.activity.BezierActivity;
 import com.testanim.longwu.activity.MetaBallActivity;
 import com.testanim.longwu.activity.MoveBallActivity;
 import com.testanim.longwu.activity.Rotate3DActivity;
-import com.testanim.longwu.base.BaseFragment;
+import com.testanim.longwu.base.BaseLazyFragment;
+import com.testanim.longwu.bean.MessageEvent;
+import com.testanim.longwu.util.ToastUtils;
 import com.testanim.longwu.view.BallView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class FirstTabFragment extends BaseFragment {
+public class FirstTabFragment extends BaseLazyFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -122,6 +127,11 @@ public class FirstTabFragment extends BaseFragment {
     @Override
     public void initView(Bundle savedInstanceState, View contentView) {
         tv.setText(mParam1 + " : " + mParam2);
+    }
+
+    @Override
+    public void doLazyBusiness() {
+
     }
 
     @Override
@@ -244,4 +254,9 @@ public class FirstTabFragment extends BaseFragment {
         set.start();
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getMessageEvent(MessageEvent messageEvent) {
+        ToastUtils.showShort(messageEvent.getMessage());
+    }
 }

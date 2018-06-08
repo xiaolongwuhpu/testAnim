@@ -11,12 +11,18 @@ import android.widget.TextView;
 
 import com.testanim.longwu.R;
 import com.testanim.longwu.base.BaseFragment;
+import com.testanim.longwu.base.BaseLazyFragment;
+import com.testanim.longwu.bean.MessageEvent;
+import com.testanim.longwu.util.ToastUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class SecondTabFragment extends BaseFragment {
+public class SecondTabFragment extends BaseLazyFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.tv)
@@ -26,7 +32,7 @@ public class SecondTabFragment extends BaseFragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private BaseFragment.OnFragmentInteractionListener mListener;
 
     public SecondTabFragment() {
     }
@@ -94,6 +100,11 @@ public class SecondTabFragment extends BaseFragment {
     }
 
     @Override
+    public void doLazyBusiness() {
+
+    }
+
+    @Override
     public void doBusiness() {
 
     }
@@ -110,4 +121,9 @@ public class SecondTabFragment extends BaseFragment {
         return rootView;
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getMessageEvent(MessageEvent messageEvent) {
+        ToastUtils.showShort(messageEvent.getMessage());
+    }
 }
